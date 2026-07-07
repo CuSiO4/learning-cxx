@@ -8,19 +8,19 @@ void func(int);
 // TODO: 为下列 ASSERT 填写正确的值
 int main(int argc, char **argv) {
     auto arg = 99;
-    ASSERT(arg == ?, "arg should be ?");
+    ASSERT(arg == 99, "arg should be ?");
     std::cout << "befor func call: " << arg << std::endl;
     func(arg);
-    ASSERT(arg == ?, "arg should be ?");
+    ASSERT(arg == 99, "arg should be ?");
     std::cout << "after func call: " << arg << std::endl;
     return 0;
 }
 
 // TODO: 为下列 ASSERT 填写正确的值
-void func(int param) {
-    ASSERT(param == ?, "param should be ?");
+void func(int param) { //没带 &，因此拷贝了一份，只是局部修改。
+    ASSERT(param == 99, "param should be ?");
     std::cout << "befor add: " << param << std::endl;
     param += 1;
-    ASSERT(param == ?, "param should be ?");
+    ASSERT(param == 100, "param should be ?");
     std::cout << "after add: " << param << std::endl;
 }

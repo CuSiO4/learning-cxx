@@ -5,9 +5,16 @@ bool is_fibonacci(int *ptr, int len, int stride) {
     ASSERT(len >= 3, "`len` should be at least 3");
     // TODO: 编写代码判断从 ptr 开始，每 stride 个元素取 1 个元素，组成长度为 n 的数列是否满足
     // arr[i + 2] = arr[i] + arr[i + 1]
+    int cnt = 2;
+    for(int i = 2 * stride; cnt < len; i += stride){
+        if (ptr[i] != ptr[i - stride] + ptr[i - 2 * stride]){
+            return false;
+        }
+        cnt ++;
+    }
     return true;
 }
-
+// 这个 len 就是注释里面的 n ... 为什么不直接说呢
 // ---- 不要修改以下代码 ----
 int main(int argc, char **argv) {
     int arr0[]{0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55},
