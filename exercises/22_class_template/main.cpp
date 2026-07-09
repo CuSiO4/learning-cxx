@@ -10,6 +10,10 @@ struct Tensor4D {
     Tensor4D(unsigned int const shape_[4], T const *data_) {
         unsigned int size = 1;
         // TODO: 填入正确的 shape 并计算 size
+        for (size_t i = 0; i < 4; i++){
+            shape[i] = shape_[i];
+        }
+        size = shape[0] * shape[1] * shape[2] * shape[3];
         data = new T[size];
         std::memcpy(data, data_, size * sizeof(T));
     }
@@ -28,8 +32,33 @@ struct Tensor4D {
     // 则 `this` 与 `others` 相加时，3 个形状为 `[1, 2, 1, 4]` 的子张量各自与 `others` 对应项相加。
     Tensor4D &operator+=(Tensor4D const &others) {
         // TODO: 实现单向广播的加法
+        size_t size = shape[0] * shape[1] * shape[2] * shape[3];
+        size_t dim1 = shape[1] * shape[2] * shape[3];
+        size_t dim2 = shape[2] * shape[3];
+        size_t dim3 = shape[3];
+
+        size_t o_dim1 = others.shape[1] * others.shape[2] * others.shape[3];
+        size_t o_dim2 = others.shape[2] * others.shape[3];
+        size_t o_dim3 = others.shape[3];// other 的维度和 this 的不一样，要单独算一份
+        for (size_t i = 0; i < size; i++){
+            size_t idx[4]{};
+            idx[0] = i / dim1;
+            idx[1] = i / dim2 % shape[1];
+            idx[2] = i / dim3 % shape[2];
+            idx[3] = i % dim3;
+            size_t idx_hat[4];
+            for (size_t j = 0; j < 4; j++){
+                idx_hat[j] = idx[j];
+                if (others.shape[j] == 1){
+                    idx_hat[j] = 0;
+                } 
+            }
+            data [idx[0] * dim1 + idx[1] * dim2 + idx[2] * dim3 +idx[3]] 
+            += others.data[idx_hat[0] * o_dim1 + idx_hat[1] * o_dim2 + idx_hat[2] * o_dim3 + idx_hat[3]];
+        }
+
         return *this;
-    }
+    }//TIPs: 1.计算总大小和步长 2.遍历所有元素简历索引 3.处理广播维度 4.执行加法
 };
 
 // ---- 不要修改以下代码 ----
