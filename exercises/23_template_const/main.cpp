@@ -11,6 +11,10 @@ struct Tensor {
     Tensor(unsigned int const shape_[N]) {
         unsigned int size = 1;
         // TODO: 填入正确的 shape 并计算 size
+        for (size_t i = 0; i < N; i++){
+            shape[i] = shape_[i];
+            size *= shape_[i];
+        }
         data = new T[size];
         std::memset(data, 0, size * sizeof(T));
     }
@@ -32,9 +36,18 @@ struct Tensor {
 private:
     unsigned int data_index(unsigned int const indices[N]) const {
         unsigned int index = 0;
+        //TIPS: 我计算总大小，用的 sizeof(data) / sizeof(T) 这个是错误的
+        // data 只是一个指针。sizeof(data) 就是指针的大小。
+        unsigned int total_size = 1;
+        for (unsigned int i = 0; i < N; ++i) {
+            total_size *= shape[i];
+        }
+        unsigned int stride = total_size;
         for (unsigned int i = 0; i < N; ++i) {
             ASSERT(indices[i] < shape[i], "Invalid index");
             // TODO: 计算 index
+            stride /= shape[i];
+            index += indices[i] * stride;
         }
         return index;
     }

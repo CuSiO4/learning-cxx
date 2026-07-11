@@ -18,21 +18,21 @@ public:
 
     ~Resource() {
         RECORDS.push_back(_records);
-    }
+    }//析构时
 };
 
 using Unique = std::unique_ptr<Resource>;
 Unique reset(Unique ptr) {
-    if (ptr) ptr->record('r');
+    if (ptr) ptr->record('r'); //返回后 ptr 离开作用域，析构并释放所拥有的资源
     return std::make_unique<Resource>();
 }
 Unique drop(Unique ptr) {
-    if (ptr) ptr->record('d');
+    if (ptr) ptr->record('d'); //这里也销毁
     return nullptr;
 }
 Unique forward(Unique ptr) {
     if (ptr) ptr->record('f');
-    return ptr;
+    return ptr; // 这是move，不会销毁
 }
 
 int main(int argc, char **argv) {
@@ -53,10 +53,9 @@ int main(int argc, char **argv) {
         {"fd"},
         // TODO: 分析 problems[1] 中资源的生命周期，将记录填入 `std::vector`
         // NOTICE: 此题结果依赖对象析构逻辑，平台相关，提交时以 CI 实际运行平台为准
-        {"", "", "", "", "", "", "", ""},
-        {"", "", "", "", "", "", "", ""},
-    };
-
+        {"d","ffr" },
+        {"d", "d","r"},
+    };//返回顺序不太懂为什么先“d”然后“ffr”
     // ---- 不要修改以下代码 ----
 
     for (auto i = 0; i < 3; ++i) {

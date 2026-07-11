@@ -7,11 +7,20 @@
 template<class k, class v>
 bool key_exists(std::map<k, v> const &map, k const &key) {
     // TODO: 实现函数
+    // find 找不到返回 end
+    // contains 直接返回true/false
+    if (map.find(key) == map.end()){
+        return false;
+    } else {
+        return true;
+    }
 }
 
 template<class k, class v>
 void set(std::map<k, v> &map, k key, v value) {
     // TODO: 实现函数
+    //map.insert({key, value}); 已存在 key 则不会改变value
+    map[key] = value;
 }
 
 // ---- 不要修改以下代码 ----
