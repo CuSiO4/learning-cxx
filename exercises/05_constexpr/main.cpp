@@ -1,9 +1,8 @@
 #include "../exercise.h"
-
 //constexper 把计算从"运行时"搬到"编译时"，程序启动后直接使用算好的结果
 //报错信息是递归斐波那契次数太多，超过了编译器的最大限制“exceeds limit of 33554432”
-//把constexper删掉即可？或者改limit
-unsigned long long fibonacci(int i) {
+//把constexper删掉即可
+constexpr unsigned long long fibonacci(int i) {
     switch (i) {
         case 0:
             return 0;
@@ -15,7 +14,7 @@ unsigned long long fibonacci(int i) {
 }
 
 int main(int argc, char **argv) {
-    auto FIB20 = fibonacci(20);
+    constexpr auto FIB20 = fibonacci(20);
     ASSERT(FIB20 == 6765, "fibonacci(20) should be 6765");
     std::cout << "fibonacci(20) = " << FIB20 << std::endl;
 
