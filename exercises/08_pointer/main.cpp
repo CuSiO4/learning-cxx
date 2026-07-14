@@ -14,7 +14,7 @@ bool is_fibonacci(int *ptr, int len, int stride) {
     }
     return true;
 }
-// 这个 len 就是注释里面的 n ... 为什么不直接说呢
+// 原来 len 就是TODO注释里面的 n ... 
 // ---- 不要修改以下代码 ----
 int main(int argc, char **argv) {
     int arr0[]{0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55},
